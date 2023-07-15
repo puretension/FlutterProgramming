@@ -87,9 +87,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
                     storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
 
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => RootTab(),
-                    ));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => RootTab(),
+                      ),
+                    );
                     //print(resp.data);
                   },
                   style: ElevatedButton.styleFrom(
@@ -100,9 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () async {
-
-                  },
+                  onPressed: () async {},
                   style: TextButton.styleFrom(
                     primary: Colors.black,
                   ),
@@ -142,7 +142,10 @@ class _SubTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '이메일과 비밀번호를 입력해서 로그인해주세요!\n오늘도 성공적인 주문이 되길:)',
-      style: TextStyle(fontSize: 16, color: BODY_TEXT_COLOR),
+      style: TextStyle(
+        fontSize: 16,
+        color: BODY_TEXT_COLOR,
+      ),
     );
   }
 }

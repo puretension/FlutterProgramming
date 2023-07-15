@@ -8,7 +8,6 @@ class CustomTextFormField extends StatelessWidget {
   final bool autofocus;
   final ValueChanged<String>? onChanged;
 
-
   const CustomTextFormField({
     required this.onChanged,
     this.autofocus = false,
@@ -21,10 +20,11 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseBorder = OutlineInputBorder(
-        borderSide: BorderSide(
-      color: INPUT_BORDER_COLOR,
-      width: 1.0,
-    ));
+      borderSide: BorderSide(
+        color: INPUT_BORDER_COLOR,
+        width: 1.0,
+      ),
+    );
     return TextFormField(
       cursorColor: PRIMARY_COLOR,
       obscureText: obscureText!,
