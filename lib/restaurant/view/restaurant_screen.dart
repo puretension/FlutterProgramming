@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:authentication_practice/common/const/data.dart';
-import 'package:authentication_practice/common/model/restaurant_model.dart';
+import 'package:authentication_practice/restaurant/model/restaurant_detail_model.dart';
+import 'package:authentication_practice/restaurant/model/restaurant_model.dart';
 import 'package:authentication_practice/restaurant/view/restaurant_detail_screen.dart';
 import 'package:authentication_practice/restaurant/component/restaurant_card.dart';
 import 'package:dio/dio.dart';
@@ -36,8 +37,8 @@ class RestaurantScreen extends StatelessWidget {
             child: FutureBuilder<List>(
               future: paginateRestaurant(),
               builder: (context, AsyncSnapshot<List> snapshot) {
-                // // print(snapshot.error);
-                // print(snapshot.data);
+                // print(snapshot.error);
+                print(snapshot.data);
                 if (!snapshot.hasData) {
                   return Container();
                 }
@@ -45,17 +46,19 @@ class RestaurantScreen extends StatelessWidget {
                     itemBuilder: (_, index) {
                       final item = snapshot.data![index];
                       final pItem = RestaurantModel.fromJson(
-                        json: item,
+                        item,
                       );
                       return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => RestaurantDetailScreen(id: pItem.id),
-                              ),
-                            );
-                          },
-                          child: RestaurantCard.fromModel(model: pItem));
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  RestaurantDetailScreen(id: pItem.id),
+                            ),
+                          );
+                        },
+                        child: RestaurantCard.fromModel(model: pItem),
+                      );
                     },
                     separatorBuilder: (_, index) {
                       return SizedBox(

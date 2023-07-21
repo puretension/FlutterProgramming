@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     final rawString = '$username:$password';
-                    //일반 String코드 -> Base64 (아래 2줄은 암기)
+                    //일반 String코드 -> Base64 인코딩 (아래 2줄은 암기)
                     Codec<String, String> stringToBase64 = utf8.fuse(base64);
                     String token =
                         stringToBase64.encode(rawString); //refresh token 받아오기위함
@@ -81,6 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     );
 
+
+                    print(resp.data);
                     final refreshToken = resp.data['refreshToken'];
                     final accessToken = resp.data['accessToken'];
 

@@ -1,8 +1,7 @@
 import 'package:authentication_practice/common/const/colors.dart';
-import 'package:authentication_practice/common/model/restaurant_detail_model.dart';
-import 'package:authentication_practice/common/model/restaurant_model.dart';
+import 'package:authentication_practice/restaurant/model/restaurant_detail_model.dart';
+import 'package:authentication_practice/restaurant/model/restaurant_model.dart';
 import 'package:flutter/material.dart';
-
 class RestaurantCard extends StatelessWidget {
   final Widget image;
   final String name;
@@ -12,7 +11,7 @@ class RestaurantCard extends StatelessWidget {
   final int deliveryFee;
   final double ratings;
   final bool isDetail;
-  final String? detail; //상세 내용
+  final String? detail; //detail screen과 일반 screen구분용
 
   const RestaurantCard({
     required this.image,

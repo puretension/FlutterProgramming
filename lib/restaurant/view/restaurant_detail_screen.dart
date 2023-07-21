@@ -1,6 +1,7 @@
 import 'package:authentication_practice/common/const/data.dart';
 import 'package:authentication_practice/common/layout/default_layout.dart';
-import 'package:authentication_practice/common/model/restaurant_detail_model.dart';
+import 'package:authentication_practice/restaurant/model/restaurant_detail_model.dart';
+import 'package:authentication_practice/restaurant/model/restaurant_model.dart';
 import 'package:authentication_practice/product/component/product_card.dart';
 import 'package:authentication_practice/restaurant/component/restaurant_card.dart';
 import 'package:dio/dio.dart';
@@ -37,7 +38,7 @@ class RestaurantDetailScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          final item = RestaurantDetailModel.fromJson(json: snapshot.data!);
+          final item = RestaurantDetailModel.fromJson(snapshot.data!);
 
           return CustomScrollView(
             slivers: [
