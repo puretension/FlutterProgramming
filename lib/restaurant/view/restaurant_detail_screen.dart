@@ -2,6 +2,7 @@ import 'package:authentication_practice/common/const/data.dart';
 import 'package:authentication_practice/common/dio/dio.dart';
 import 'package:authentication_practice/common/layout/default_layout.dart';
 import 'package:authentication_practice/common/model/cursor_pagination_model.dart';
+import 'package:authentication_practice/common/utils/pagination_utils.dart';
 import 'package:authentication_practice/rating/component/rating_card.dart';
 import 'package:authentication_practice/rating/model/rating_model.dart';
 import 'package:authentication_practice/restaurant/model/restaurant_detail_model.dart';
@@ -29,11 +30,20 @@ class _RestaurantDetailScreenState
     extends ConsumerState<RestaurantDetailScreen> {
   // Future<RestaurantDetailModel> getRestaurantDetail(WidgetRef ref) async {
 
+  final ScrollController controller = ScrollController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
+  }
+
+  void listener() {
+    PaginationUtils.paginate(
+      controller: controller,
+      provider: ref.read(restaurantRatingProvider(widget.id).notifier),
+    );
   }
 
   @override
@@ -54,6 +64,7 @@ class _RestaurantDetailScreenState
     return DefaultLayout(
         title: '불타는 떡볶이',
         child: CustomScrollView(
+          controller: controller,
           slivers: [
             renderTop(
               model: state,
@@ -152,7 +163,7 @@ class _RestaurantDetailScreenState
 
             return Padding(
               padding: const EdgeInsets.only(top: 16),
-              child: ProductCard.fromModel(model: model),
+              child: ProductCard.fromRestaurantProductModel(model: model),
             );
           },
           childCount: products.length,
