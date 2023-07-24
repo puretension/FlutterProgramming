@@ -1,12 +1,15 @@
 import 'package:authentication_practice/common/const/data.dart';
 import 'package:authentication_practice/common/dio/dio.dart';
 import 'package:authentication_practice/common/layout/default_layout.dart';
+import 'package:authentication_practice/common/model/cursor_pagination_model.dart';
 import 'package:authentication_practice/rating/component/rating_card.dart';
+import 'package:authentication_practice/rating/model/rating_model.dart';
 import 'package:authentication_practice/restaurant/model/restaurant_detail_model.dart';
 import 'package:authentication_practice/restaurant/model/restaurant_model.dart';
 import 'package:authentication_practice/product/component/product_card.dart';
 import 'package:authentication_practice/restaurant/component/restaurant_card.dart';
 import 'package:authentication_practice/restaurant/provider/restaurant_provider.dart';
+import 'package:authentication_practice/restaurant/provider/restaurant_rating_provider.dart';
 import 'package:authentication_practice/restaurant/repository/restaurant_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +39,9 @@ class _RestaurantDetailScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
+    final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
+
+    print(ratingsState);
 
     if (state == null) {
       return DefaultLayout(
@@ -56,20 +62,30 @@ class _RestaurantDetailScreenState
             if (state is RestaurantDetailModel) renderLabel(),
             if (state is RestaurantDetailModel)
               renderProducts(products: state.products),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              sliver: SliverToBoxAdapter(
-                child: RatingCard(
-                  avatarImage: AssetImage('asset/img/logo/codefactory_logo.png'),
-                  images: [],
-                  rating: 4,
-                  email: 'jc@codefactory.ai',
-                  content: '맛있습니다.',
-                ),
+            if (ratingsState is CursorPagination<RatingModel>)
+              renderRatings(
+                models: ratingsState.data,
               ),
-            ),
           ],
-        )
+        ));
+  }
+
+  SliverPadding renderRatings({
+    required List<RatingModel> models,
+  }) {
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (_, index) => Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: RatingCard.fromModel(
+              model: models[index],
+            ),
+          ),
+          childCount: models.length,
+        ),
+      ),
     );
   }
 

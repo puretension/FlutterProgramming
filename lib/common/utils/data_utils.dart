@@ -7,7 +7,7 @@ class DataUtils{
     return 'http://$ip$value'; //이 반환값이 위의 thumbUrl에 저장됨
   }
 
-  static List<String> listPathsToUrls(List<String>paths){
+  static List<String> listPathsToUrls(List paths){
     return paths.map((e) => pathToUrl(e)).toList();
   }
 }

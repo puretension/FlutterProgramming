@@ -2,6 +2,7 @@ import 'package:authentication_practice/common/const/data.dart';
 import 'package:authentication_practice/common/dio/dio.dart';
 import 'package:authentication_practice/common/model/cursor_pagination_model.dart';
 import 'package:authentication_practice/common/model/pagination_params.dart';
+import 'package:authentication_practice/common/repository/base_pagination_repository.dart';
 import 'package:authentication_practice/rating/model/rating_model.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
@@ -19,7 +20,8 @@ final restaurantRatingRepositoryProvider = Provider
 
 // http://ip/restaurant/:rid/rating //rid를 family로 받아서 이 http사용가능
 @RestApi()
-abstract class RestaurantRatingRepository{
+abstract class RestaurantRatingRepository
+    implements IBasePaginationRepository<RatingModel>{
   factory RestaurantRatingRepository(Dio dio, {String baseUrl}) =
 _RestaurantRatingRepository;
 

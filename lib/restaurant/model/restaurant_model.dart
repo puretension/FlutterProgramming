@@ -1,4 +1,5 @@
 import 'package:authentication_practice/common/const/data.dart';
+import 'package:authentication_practice/common/model/model_with_id.dart';
 import 'package:authentication_practice/common/utils/data_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,7 +12,7 @@ enum RestaurantPriceRange{
 }
 
 @JsonSerializable()
-class RestaurantModel{
+class RestaurantModel implements IModelWithId{
   final String id;
   final String name;
   //수정필요한 곳에 JsonKey후 아래의 PathUrl필수

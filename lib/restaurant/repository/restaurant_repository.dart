@@ -2,6 +2,7 @@ import 'package:authentication_practice/common/const/data.dart';
 import 'package:authentication_practice/common/dio/dio.dart';
 import 'package:authentication_practice/common/model/cursor_pagination_model.dart';
 import 'package:authentication_practice/common/model/pagination_params.dart';
+import 'package:authentication_practice/common/repository/base_pagination_repository.dart';
 import 'package:authentication_practice/restaurant/model/restaurant_detail_model.dart';
 import 'package:authentication_practice/restaurant/model/restaurant_model.dart';
 import 'package:dio/dio.dart' hide Headers;
@@ -20,7 +21,8 @@ final restaurantRepositoryProvider = Provider(
 );
 
 @RestApi()
-abstract class RestaurantRepository {
+abstract class RestaurantRepository implements
+    IBasePaginationRepository<RestaurantModel> {
   factory RestaurantRepository(Dio dio, {String baseUrl}) =
       _RestaurantRepository;
 
