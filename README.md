@@ -1,6 +1,6 @@
 # authentication_practice
 Learned By Code Factory
-# Study - 
+# Study
 Provider, JsonSerializable, Retrofit, Dio Interceptor, Pagination, DataModeling, Cache, Code Generation, GoRouter, Authentication Logic
 
 
