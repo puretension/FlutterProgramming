@@ -33,7 +33,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   }
 
   void scrollListener(){
-    print('run');
+    // print('run');
     //현재 위치가 최대 길이보다 조금 덜되는 위치까지 왔다면?
     //미리 새로운 데이터 추가요청
     if(controller.offset > controller.position.maxScrollExtent - 300){

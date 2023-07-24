@@ -11,6 +11,8 @@ class RestaurantCard extends StatelessWidget {
   final int deliveryFee;
   final double ratings;
   final bool isDetail;
+  //Hero 위젯 태그
+  final String? heroKey;
   final String? detail; //detail screen과 일반 screen구분용
 
   const RestaurantCard({
@@ -23,6 +25,7 @@ class RestaurantCard extends StatelessWidget {
     required this.ratings,
     this.isDetail = false,
     this.detail,
+    this.heroKey,
     super.key,
   });
 
@@ -35,6 +38,7 @@ class RestaurantCard extends StatelessWidget {
         model.thumbUrl,
         fit: BoxFit.cover,
       ),
+      heroKey: model.id,
       name: model.name,
       tags: model.tags,
       ratingsCount: model.ratingsCount,
@@ -51,13 +55,19 @@ class RestaurantCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if(isDetail)
-          image,
-        if(!isDetail)
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12.0),
-          child: image,
+        if(heroKey != null)
+        Hero(
+          tag: ObjectKey(heroKey),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+            child: image,
+          ),
         ),
+        if(heroKey == null)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+            child: image,
+          ),
         const SizedBox(
           height: 16,
         ),

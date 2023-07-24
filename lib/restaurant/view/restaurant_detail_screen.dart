@@ -1,75 +1,105 @@
 import 'package:authentication_practice/common/const/data.dart';
 import 'package:authentication_practice/common/dio/dio.dart';
 import 'package:authentication_practice/common/layout/default_layout.dart';
+import 'package:authentication_practice/rating/component/rating_card.dart';
 import 'package:authentication_practice/restaurant/model/restaurant_detail_model.dart';
 import 'package:authentication_practice/restaurant/model/restaurant_model.dart';
 import 'package:authentication_practice/product/component/product_card.dart';
 import 'package:authentication_practice/restaurant/component/restaurant_card.dart';
+import 'package:authentication_practice/restaurant/provider/restaurant_provider.dart';
 import 'package:authentication_practice/restaurant/repository/restaurant_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skeletons/skeletons.dart';
 
-class RestaurantDetailScreen extends ConsumerWidget {
+class RestaurantDetailScreen extends ConsumerStatefulWidget {
   final String id;
   const RestaurantDetailScreen({required this.id, super.key});
 
+  @override
+  ConsumerState<RestaurantDetailScreen> createState() =>
+      _RestaurantDetailScreenState();
+}
+
+class _RestaurantDetailScreenState
+    extends ConsumerState<RestaurantDetailScreen> {
   // Future<RestaurantDetailModel> getRestaurantDetail(WidgetRef ref) async {
-  //   // final dio = Dio();
-  //   // dio.interceptors.add(
-  //   //   CustomInterceptor(
-  //   //     storage: storage,
-  //   //   ),
-  //   // );
-  //
-  //   // final dio = ref.watch(dioProvider);
-  //   // final repository =
-  //   //     RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
-  //   // return repository.getRestaurantDetail(id: id);
-  //   //코드 축약
-  //   return ref.watch(restaurantRepositoryProvider).getRestaurantDetail(id: id);
-  // }
-  // final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
-  // final resp = await dio.get(
-  //   'http://$ip/restaurant/$id',
-  //   options: Options(
-  //     headers: {
-  //       'authorization': 'Bearer $accessToken',
-  //     },
-  //   ),
-  // );
-  // return resp.data;
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
-    return DefaultLayout(
-      title: '불타는 떡볶이',
-      child: FutureBuilder<RestaurantDetailModel>(
-        future: ref.watch(restaurantRepositoryProvider).getRestaurantDetail(id: id),
-        builder: (_, AsyncSnapshot<RestaurantDetailModel> snapshot) {
-          //print(snapshot.data);
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
+  }
 
-          return CustomScrollView(
-            slivers: [
-              renderTop(
-                model: snapshot.data!,
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(restaurantDetailProvider(widget.id));
+
+    if (state == null) {
+      return DefaultLayout(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    return DefaultLayout(
+        title: '불타는 떡볶이',
+        child: CustomScrollView(
+          slivers: [
+            renderTop(
+              model: state,
+            ),
+            if (state is! RestaurantDetailModel) renderLoading(),
+            if (state is RestaurantDetailModel) renderLabel(),
+            if (state is RestaurantDetailModel)
+              renderProducts(products: state.products),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverToBoxAdapter(
+                child: RatingCard(
+                  avatarImage: AssetImage('asset/img/logo/codefactory_logo.png'),
+                  images: [],
+                  rating: 4,
+                  email: 'jc@codefactory.ai',
+                  content: '맛있습니다.',
+                ),
               ),
-              renderLabel(),
-              renderProducts(products: snapshot.data!.products),
-            ],
-          );
-        },
+            ),
+          ],
+        )
+    );
+  }
+
+  SliverPadding renderLoading() {
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(
+        vertical: 16.0,
+        horizontal: 16.0,
+      ),
+      sliver: SliverList(
+        delegate: SliverChildListDelegate(
+          List.generate(
+            3,
+            (index) => Padding(
+              padding: const EdgeInsets.only(bottom: 32.0),
+              child: SkeletonParagraph(
+                style: SkeletonParagraphStyle(
+                  lines: 5,
+                  padding: EdgeInsets.zero,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
 
   SliverToBoxAdapter renderTop({
-    required RestaurantDetailModel model,
+    required RestaurantModel model,
   }) {
     return SliverToBoxAdapter(
       child: RestaurantCard.fromModel(
