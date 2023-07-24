@@ -1,6 +1,8 @@
 # authentication_practice
+Learned By Code Factory
+# Study - 
+Provider, JsonSerializable, Retrofit, Dio Interceptor, Pagination, DataModeling, Cache, Code Generation, GoRouter, Authentication Logic
 
-A new Flutter project.
 
 ## Getting Started
 
