@@ -14,6 +14,7 @@ import 'package:authentication_practice/restaurant/component/restaurant_card.dar
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class RestaurantScreen extends StatelessWidget {
   @override
@@ -23,11 +24,7 @@ class RestaurantScreen extends StatelessWidget {
         itemBuilder: <RestaurantModel>(_,index,model){
           return GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => RestaurantDetailScreen(id: model.id),
-                ),
-              );
+             context.go('/restaurant/${model.id}');
             },
             child: RestaurantCard.fromModel(model: model),
           );

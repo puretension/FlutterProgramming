@@ -7,12 +7,15 @@ import 'package:authentication_practice/common/const/data.dart';
 import 'package:authentication_practice/common/layout/default_layout.dart';
 import 'package:authentication_practice/common/secure_storage/secure_storage.dart';
 import 'package:authentication_practice/common/view/root_tab.dart';
+import 'package:authentication_practice/user/model/user_model.dart';
+import 'package:authentication_practice/user/provider/user_me_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'login';
   const LoginScreen({super.key});
 
   @override
@@ -25,7 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dio = Dio();
+    final state = ref.watch(userMeProvider);
 
     return DefaultLayout(
       child: SingleChildScrollView(
@@ -67,39 +70,45 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   height: 16,
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    final rawString = '$username:$password';
-                    //일반 String코드 -> Base64 인코딩 (아래 2줄은 암기)
-                    Codec<String, String> stringToBase64 = utf8.fuse(base64);
-                    String token =
-                        stringToBase64.encode(rawString); //refresh token 받아오기위함
-
-                    final resp = await dio.post(
-                      'http://$ip/auth/login',
-                      options: Options(
-                        headers: {
-                          'Authorization': 'Basic $token',
+                  onPressed: state is UserModelLoading
+                      ? null
+                      : () async {
+                          ref.read(userMeProvider.notifier).login(
+                                username: username,
+                                password: password,
+                              );
+                          // final rawString = '$username:$password';
+                          // //일반 String코드 -> Base64 인코딩 (아래 2줄은 암기)
+                          // Codec<String, String> stringToBase64 = utf8.fuse(base64);
+                          // String token =
+                          //     stringToBase64.encode(rawString); //refresh token 받아오기위함
+                          //
+                          // final resp = await dio.post(
+                          //   'http://$ip/auth/login',
+                          //   options: Options(
+                          //     headers: {
+                          //       'Authorization': 'Basic $token',
+                          //     },
+                          //   ),
+                          // );
+                          //
+                          //
+                          // print(resp.data);
+                          // final refreshToken = resp.data['refreshToken'];
+                          // final accessToken = resp.data['accessToken'];
+                          //
+                          // final storage = ref.read(secureStorageProvider);
+                          //
+                          // await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                          // await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+                          //
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (_) => RootTab(),
+                          //   ),
+                          // );
+                          // //print(resp.data);
                         },
-                      ),
-                    );
-
-
-                    print(resp.data);
-                    final refreshToken = resp.data['refreshToken'];
-                    final accessToken = resp.data['accessToken'];
-
-                    final storage = ref.read(secureStorageProvider);
-
-                    await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
-                    await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
-
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => RootTab(),
-                      ),
-                    );
-                    //print(resp.data);
-                  },
                   style: ElevatedButton.styleFrom(
                     primary: PRIMARY_COLOR,
                   ),

@@ -1,9 +1,18 @@
 import 'dart:convert';
 
+import 'package:authentication_practice/common/const/data.dart';
+import 'package:authentication_practice/common/dio/dio.dart';
 import 'package:authentication_practice/common/model/login_response.dart';
 import 'package:authentication_practice/common/model/token_response.dart';
 import 'package:authentication_practice/common/utils/data_utils.dart';
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+final authRepositoryProvider = Provider<AuthRepository>((ref){
+  final dio = ref.watch(dioProvider);
+  
+  return AuthRepository(baseUrl: 'http://$ip/auth', dio: dio);
+});
 
 class AuthRepository {
   //baseUrl == http://$ip/auth
