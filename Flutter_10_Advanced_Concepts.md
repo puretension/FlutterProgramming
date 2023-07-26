@@ -1,4 +1,4 @@
-# Provider_JsonSerializable
+# Provider & JsonSerializable
 
 Provider: 플러터에서 상태 관리 패키지 중 하나로, 상태를 관리하고 공유하기 위한 방법을 제공하며 다양한 Provider를 사용하면 상태 관리를 효율적으로 할 수 있다.
 JsonSerializable: 플러터에서 모델 클래스를 직렬화하고 역직렬화하기 위해 사용하는 패키지. Dart 클래스를 JSON 데이터로 변환하거나 JSON 데이터를 Dart 클래스로 변환하는 데 도움을 준다.
