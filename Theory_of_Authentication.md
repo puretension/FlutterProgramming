@@ -61,6 +61,4 @@ Base64로 Encoded
 - Access Token은 유효기간 짧고, Refresh Token은 유효기간이 길다
 - 자주 노출되는 Access Token은 유효기간을 짧게 해서 Token이 탈취되어도 해커가 오래 사용 못하도록 방지
 - 상대적으로 노출이적은 R Token은 A Token을 새로 발급 받을때만 사용되므로 안전함
-(1번과정에서 보내는 AccessToken은 기간이 만료되었다는 가정임)
-
 Refresh Token 기간도 만료된다면(401에러) → Logout
