@@ -8,6 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart'; //firstWhereOrNull 가능하게 해줌
 
 //캐시 공유 시작
+//restaurantDetailProvider는 restaurantProvider를 watch하고 있기에
+//restaurantProvider가 빌드되거나 상태가 변경되면
+//restaurantDetailProvider도 마찬가지로 변경된다
+
+//<RestaurantModel, String> 반환값은 왼쪽, 넣을건 id 오른쪽
 
 final restaurantDetailProvider =
     Provider.family<RestaurantModel?, String>((ref, id) {
