@@ -24,7 +24,11 @@ class RestaurantScreen extends StatelessWidget {
         itemBuilder: <RestaurantModel>(_,index,model){
           return GestureDetector(
             onTap: () {
-             context.go('/restaurant/${model.id}');
+             // context.go('/restaurant/${model.id}'); 
+              context.goNamed(RestaurantDetailScreen.routeName,
+              pathParameters: {
+                'rid': model.id
+              });
             },
             child: RestaurantCard.fromModel(model: model),
           );

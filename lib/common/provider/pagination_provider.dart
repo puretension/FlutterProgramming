@@ -9,7 +9,7 @@ class PaginationProvider<
 T extends IModelWithId,
 U extends IBasePaginationRepository<T>
 > extends StateNotifier<CursorPaginationBase> {
-  final U repository;
+  final U repository; //U타입의 repository
 
   PaginationProvider({
     required this.repository,
@@ -49,42 +49,42 @@ U extends IBasePaginationRepository<T>
           final pState = state as CursorPagination; //
           //더이상 데이터 없다면?
           if (!pState.meta.hasMore) {
-            return;
+            return; //1) 기존 상태에서 이미 다음 데이터가 없다고 되어있다면? -> 리턴
           }
         }
 
         final isLoading = state is CursorPaginationLoading; //완전 첫 로딩
         final isRefetching =
-            state is CursorPaginationRefetching; //데이터 있는데 유저 새로고침 할때
+            state is CursorPaginationRefetching; //새로고침 로딩
         final isFetchingMore =
-            state is CursorPaginationFetchingMore; //아래 스크롤 후 로딩
+            state is CursorPaginationFetchingMore; //밑에 대기로딩
 
-        // 2번 반환 상황) // 2) 로딩중 - fetchMore: true
+        //  2) CursorPaginationLoading - 데이터가 로딩중인 상태(현재 캐시 없다!)
         if (fetchMore && (isLoading || isRefetching || isFetchingMore)) {
           return;
         }
 
-        //PaginationParams 생성
+        //PaginationParams 생성(copywith으로 after나 count변경가능)
         PaginationParams paginationParams = PaginationParams(
-          count: fetchCount,
+          count: fetchCount, //안넣어줘도 되긴함 이미 default 20
         );
 
         // fetchMore
         // 데이터를 추가로 더 가져오는 상황
         if (fetchMore) {
           final pState = state as CursorPagination<T>;
-
+          //요기서 걸리면
           state = CursorPaginationFetchingMore(
             meta: pState.meta,
             data: pState.data,
           );
-
+          //paginationParams변경 필요
           paginationParams = paginationParams.copyWith(
             after: pState.data.last.id,
           );
         }
 
-        //데이터를 처음부터 가져오는 상황(paginationParams변경 안해도됨)
+        //맨처음 데이터 가져오는 상황(처음부터 가져오는 상황이므로 paginatationParams 변경 불필요함
         else {
           // 만약 데이터가 있는 상황이라면?
           // 기존 데이터 보존하고 Fetch (API 요청) 진행
@@ -101,6 +101,7 @@ U extends IBasePaginationRepository<T>
           }
         }
 
+        //paginate실제 수행하여 데이터받아온다
         final resp = await repository.paginate(
           paginationParams: paginationParams, //쿼리로 자동 반환되는 paginationParams
         );
@@ -108,15 +109,18 @@ U extends IBasePaginationRepository<T>
         if (state is CursorPaginationFetchingMore) {
           final pState = state as CursorPaginationFetchingMore<T>;
 
+          //다음 20개 데이터 받아왓기때문에 기존 데이터와 합쳐줄 작업!!
           state = resp.copyWith(
             data: [
               ...pState.data, //기존에 잇는 데이터에
               ...resp.data, //새로운 데이터 추가
             ],
           );
-        } else {
+        }
+        //if문이아닌 CursorPaginationLoading이거나, CursorPaginationRefetching인 경우
+        else {
           // 상태가 CursorPaginationFetchingMore 아니라면?
-          state = resp;
+          state = resp; //맨처음 데이터 받아보자
         }
       } catch (e,stack) {
         print(e);

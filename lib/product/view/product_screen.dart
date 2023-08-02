@@ -5,6 +5,7 @@ import 'package:authentication_practice/product/provider/product_provider.dart';
 import 'package:authentication_practice/restaurant/view/restaurant_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductScreen extends StatelessWidget {
   @override
@@ -14,12 +15,19 @@ class ProductScreen extends StatelessWidget {
       itemBuilder: <ProductModel>(_, index, model) {
         return GestureDetector(
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => RestaurantDetailScreen(
-                  id: model.restaurant.id,
-                ),
-              ),
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (_) => RestaurantDetailScreen(
+            //       id: model.restaurant.id,
+            //     ),
+            //   ),
+            // );
+            print(model.restaurant.id);
+            context.goNamed(
+              RestaurantDetailScreen.routeName,
+              pathParameters: {
+                'rid': model.restaurant.id, // model.id아님!(상품이름이아니라 상품이잇는 가계이름 줘야함)
+              },
             );
           },
           child: ProductCard.fromProductModel(

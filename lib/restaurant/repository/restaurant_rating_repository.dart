@@ -36,3 +36,14 @@ _RestaurantRatingRepository;
     @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 }
+
+
+// // 'http://$ip/restaurant/'
+// @GET('/') //일반 레스토랑용
+// @Headers({
+//   'accessToken': 'true',
+// })
+// Future<CursorPagination<RestaurantModel>> paginate({
+//   //retrofit에서 쿼리 추가할때
+//   @Queries() PaginationParams? paginationParams = const PaginationParams(),
+// });

@@ -34,7 +34,7 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
   }) : super(UserModelLoading()) {
     //내 정보 가져오기
 
-    print('@@@');
+    //유저 정보 바로 가져 오기
     getMe();
   }
 
@@ -80,6 +80,7 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
 
       return userResp;
     } catch (e) {
+      //ID잘못이다, PW잘못이다 세부작업 필요
       state = UserModelError(message: '로그인에 실패했습니다');
 
       return Future.value(state);

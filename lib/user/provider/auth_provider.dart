@@ -33,10 +33,12 @@ class AuthProvider extends ChangeNotifier {
           builder: (_, __) => RootTab(),
           routes: [
             GoRoute(
-                path: 'restaurant/:rid',
-                name: RestaurantDetailScreen.routeName,
-                builder: (_, state) =>
-                    RestaurantDetailScreen(id: state.pathParameters['rid']!))
+              path: 'restaurant/:rid',
+              name: RestaurantDetailScreen.routeName,
+              builder: (_, state) =>
+                  RestaurantDetailScreen(id: state.pathParameters['rid']!),
+              //restaurantScreen의 goNamed와 연결
+            )
           ],
         ),
         GoRoute(
@@ -50,13 +52,18 @@ class AuthProvider extends ChangeNotifier {
           builder: (_, __) => LoginScreen(),
         ),
       ];
+  
+  logout(){
+    ref.read(userMeProvider.notifier).logout();
+    notifyListeners();
+  }
 
   //SplashScreen
   //앱 처음 시작했을때 토큰 존재 확인하고
   //로그인 스크린으로 보내줄지 홈 스크린으로 보내줄지 확인 과정 필요
   FutureOr<String?> redirectLogic(BuildContext context, GoRouterState state) {
     final UserModelBase? user = ref.read(userMeProvider);
-    final logginIn = state.uri.toString() == '/login';
+    final logginIn = state.path == '/login';
 
     //유저 정보 없는데 로그인중이면 그대로 로그인 페이지,
     // 만약 로그인중 아니면 로그인 페이지 이동
@@ -65,9 +72,9 @@ class AuthProvider extends ChangeNotifier {
     }
     //user != null
     //UserModel
-    //사용자 정ㅂ조가 있는 상태면
+    //사용자 정보가 있는 상태면(유저정보를 가져왔는데)
     //로그인중이거나 현재위치가 SplashScreen이면?
-    //홈으로 이동
+    //홈으로 이동('/'이게 홈임)
     if (user is UserModel) {
       return logginIn || state.uri.toString() == '/splash' ? '/' : null;
     }

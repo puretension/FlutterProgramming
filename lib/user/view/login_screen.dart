@@ -70,8 +70,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   height: 16,
                 ),
                 ElevatedButton(
-                  onPressed: state is UserModelLoading
-                      ? null
+                  onPressed: state is UserModelLoading //로그인중일때
+                      ? null //null을 부여하여 버튼을 비활성화 시킨다
                       : () async {
                           ref.read(userMeProvider.notifier).login(
                                 username: username,

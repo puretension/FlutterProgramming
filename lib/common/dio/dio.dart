@@ -1,23 +1,30 @@
 import 'package:authentication_practice/common/const/data.dart';
 import 'package:authentication_practice/common/secure_storage/secure_storage.dart';
+import 'package:authentication_practice/user/provider/auth_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final dioProvider = Provider<Dio>((ref){
+final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
   final storage = ref.watch(secureStorageProvider);
   dio.interceptors.add(
-    CustomInterceptor(storage: storage),
+    CustomInterceptor(
+      storage: storage,
+      ref: ref,
+    ),
   );
   return dio;
 });
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
+  final Ref ref;
 
   CustomInterceptor({
+    required this.ref,
     required this.storage,
   });
 
@@ -54,10 +61,10 @@ class CustomInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // TODO: implement onResponse
-    print('[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
+    print(
+        '[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
     super.onResponse(response, handler);
   }
-
 
 // 3) 에러가 났을때(어떤 상황 캐치하고 싶은지 분기처리가 중요함)
   @override
@@ -82,7 +89,7 @@ class CustomInterceptor extends Interceptor {
     if (isStatus401 == true && isPathRefresh == false) {
       final dio = Dio();
 
-      try{
+      try {
         final resp = await dio.post(
           'http://$ip/auth/token',
           options: Options(
@@ -98,19 +105,24 @@ class CustomInterceptor extends Interceptor {
         final options = err.requestOptions; //요청을보낼때 필요한 모든값은 equestOptions에 잇다
 
         //토큰 변경하기
-        options.headers.addAll({
-          'authorization' : 'Bearer $accessToken'
-        });
+        options.headers.addAll({'authorization': 'Bearer $accessToken'});
         //storage 업데이트 당연히 필요
         await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
 
         //요청 재전송(원래 요청을 토큰만 변경시킨채로 다시보냄)
         final response = await dio.fetch(options);
         return handler.resolve(response); //외부에서는 이 과정만보임 (요청이 잘 끝났음 의미)
-      }on DioError catch(e){
+      } on DioError catch (e) {
+        // circular dependency error
+        // A, B
+        // A -> B
+        // B -> A
+        // A는 B의 친구구나!
+        // A->B->A->B->A->B...
+        //usermeprovider는 dio, dio는 usermeprovider가 필요함
+        ref.read(authProvider.notifier).logout();
         return handler.reject(err);
       }
-
     }
 
     return handler.reject(err);
