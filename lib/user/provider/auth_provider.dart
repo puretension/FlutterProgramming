@@ -1,4 +1,6 @@
 import 'package:authentication_practice/common/view/root_tab.dart';
+import 'package:authentication_practice/order/view/order_done_screen.dart';
+import 'package:authentication_practice/restaurant/view/basket_screen.dart';
 import 'package:authentication_practice/restaurant/view/restaurant_detail_screen.dart';
 import 'package:authentication_practice/user/model/user_model.dart';
 import 'package:authentication_practice/user/provider/user_me_provider.dart';
@@ -38,8 +40,20 @@ class AuthProvider extends ChangeNotifier {
               builder: (_, state) =>
                   RestaurantDetailScreen(id: state.pathParameters['rid']!),
               //restaurantScreen의 goNamed와 연결
-            )
+            ),
           ],
+        ),
+        GoRoute(
+          path: '/basket',
+          name: BasketScreen.routeName,
+          builder: (_, state) => BasketScreen(),
+          //restaurantScreen의 goNamed와 연결
+        ),
+        GoRoute(
+          path: '/order_done',
+          name: OrderDoneScreen.routeName,
+          builder: (_, state) => OrderDoneScreen(),
+          //restaurantScreen의 goNamed와 연결
         ),
         GoRoute(
           path: '/splash',
@@ -52,8 +66,8 @@ class AuthProvider extends ChangeNotifier {
           builder: (_, __) => LoginScreen(),
         ),
       ];
-  
-  logout(){
+
+  logout() {
     ref.read(userMeProvider.notifier).logout();
     notifyListeners();
   }

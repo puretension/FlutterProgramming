@@ -1,5 +1,6 @@
 import 'package:authentication_practice/common/const/colors.dart';
 import 'package:authentication_practice/common/layout/default_layout.dart';
+import 'package:authentication_practice/order/view/order_screen.dart';
 import 'package:authentication_practice/product/view/product_screen.dart';
 import 'package:authentication_practice/restaurant/view/restaurant_screen.dart';
 import 'package:authentication_practice/user/view/profile_screen.dart';
@@ -48,7 +49,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin{
         children: [
           RestaurantScreen(),
           ProductScreen(),
-          Center(child: Container(child: Text('주문'),)),
+          OrderScreen(),
           ProfileScreen(),
         ],
       ),

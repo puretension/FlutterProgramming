@@ -14,11 +14,13 @@ import 'package:authentication_practice/restaurant/component/restaurant_card.dar
 import 'package:authentication_practice/restaurant/provider/restaurant_provider.dart';
 import 'package:authentication_practice/restaurant/provider/restaurant_rating_provider.dart';
 import 'package:authentication_practice/restaurant/repository/restaurant_repository.dart';
+import 'package:authentication_practice/restaurant/view/basket_screen.dart';
 import 'package:authentication_practice/user/provider/basket_provider.dart';
 import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Badge; //뱃지 정상적으로 불러오기용
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletons/skeletons.dart';
 
 class RestaurantDetailScreen extends ConsumerStatefulWidget {
@@ -70,7 +72,11 @@ class _RestaurantDetailScreenState
     return DefaultLayout(
         title: '불타는 떡볶이',
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            //pushNamed와 goNamed의 차이
+            //goNamed는 뒤로가기버튼 X why? 얘만 stack
+            context.pushNamed(BasketScreen.routeName);
+          },
           backgroundColor: PRIMARY_COLOR,
           child: Badge(
             showBadge: basket.isNotEmpty, //basket >= 1

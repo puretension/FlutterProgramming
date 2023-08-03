@@ -5,10 +5,9 @@ import 'package:authentication_practice/common/repository/base_pagination_reposi
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //pagination 일반화 시작
-class PaginationProvider<
-T extends IModelWithId,
-U extends IBasePaginationRepository<T>
-> extends StateNotifier<CursorPaginationBase> {
+class PaginationProvider<T extends IModelWithId,
+U extends IBasePaginationRepository<T>>
+    extends StateNotifier<CursorPaginationBase> {
   final U repository; //U타입의 repository
 
   PaginationProvider({

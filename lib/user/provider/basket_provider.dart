@@ -24,7 +24,7 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
 
   //optimistic response 활용
   Future<void> patchBasket() async{
-    repository.patchBasket(
+    await repository.patchBasket(
       body: PatchBasketBody(
         basket: state.map(
           (e) => PatchBasketBodyBasket(
