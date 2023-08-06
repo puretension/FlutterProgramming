@@ -36,6 +36,7 @@ class CustomInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     print('[REQ] [${options.method}] ${options.uri}');
+
     if (options.headers['accessToken'] == 'true') {
       options.headers.remove('accessToken');
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
@@ -88,7 +89,6 @@ class CustomInterceptor extends Interceptor {
     //토큰을 refresh하려는 의도가 아니었는데 401에러가 났다면?
     if (isStatus401 == true && isPathRefresh == false) {
       final dio = Dio();
-
       try {
         final resp = await dio.post(
           'http://$ip/auth/token',

@@ -18,6 +18,7 @@ class UserModelError extends UserModelBase {
 class UserModelLoading extends UserModelBase {}
 
 
+
 @JsonSerializable()
 class UserModel extends UserModelBase{
   final String id;

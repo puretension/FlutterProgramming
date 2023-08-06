@@ -18,12 +18,15 @@ class _PaginationInfo {
 }
 
 //pagination 일반화 시작
+//여기 extends == implements
+//model type, repository type
 class PaginationProvider<T extends IModelWithId,
         U extends IBasePaginationRepository<T>>
     extends StateNotifier<CursorPaginationBase> {
-  final U repository; //U타입의 repository
+  final U repository; //U타입 repository
+  //throttle 시작
   final paginationThrottle = Throttle(
-    Duration(seconds: 3),
+    Duration(seconds: 1),
     initialValue: _PaginationInfo(), //맨처음 실행
     checkEquality: false,
   );

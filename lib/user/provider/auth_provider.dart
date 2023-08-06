@@ -21,11 +21,14 @@ class AuthProvider extends ChangeNotifier {
   AuthProvider({
     required this.ref,
   }) {
-    ref.listen<UserModelBase?>(userMeProvider, (previous, next) {
-      if (previous != next) {
-        notifyListeners();
-      }
-    });
+    ref.listen<UserModelBase?>(
+      userMeProvider,
+      (previous, next) {
+        if (previous != next) {
+          notifyListeners();
+        }
+      },
+    );
   }
 
   List<GoRoute> get routes => [

@@ -46,27 +46,4 @@ class RestaurantModel implements IModelWithId{
   //instance를 json으로 변환하는것
   Map<String,dynamic> toJson() => _$RestaurantModelToJson(this);
 
-  // //JsonKey를 annotate해준 thumburl넣기(static pathToUrl필수임)
-  // static pathToUrl(String value){
-  //   return 'http://$ip$value'; //이 반환값이 위의 thumbUrl에 저장됨
-  // }
-
-  //g.dart파일과 동일함
-//   factory RestaurantModel.fromJson({
-//     required Map<String,dynamic> json,
-// }){
-//     return RestaurantModel(
-//       id: json['id'],
-//       name: json['name'],
-//       thumbUrl: 'http://$ip${json['thumbUrl']}',
-//       tags: List<String>.from(json['tags']),
-//       priceRange: RestaurantPriceRange.values.firstWhere(
-//             (e) => e.name == json['priceRange'],
-//       ),
-//       ratings: json['ratings'],
-//       ratingsCount: json['ratingsCount'],
-//       deliveryTime: json['deliveryTime'],
-//       deliveryFee: json['deliveryFee'],
-//     );
-//   }
 }

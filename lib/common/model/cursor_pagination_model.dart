@@ -23,8 +23,7 @@ class CursorPaginationLoading extends CursorPaginationBase {}
 @JsonSerializable(
   genericArgumentFactories: true,
 )
-
-//3
+//3   genericArgumentFactories: //제네릭 타입쓸거면 필수
 class CursorPagination<T> extends CursorPaginationBase {
   final CursorPaginationMeta meta;
   final List<T> data;
@@ -43,7 +42,11 @@ class CursorPagination<T> extends CursorPaginationBase {
       data: data ?? this.data,
     );
   }
-
+  //T Function(Object? json) fromJsonT   이게 제네릭타입추가로 생긴코드이며 Runtime에 암시해주기위함
+  //BuildTime에 알지못하는 T값을 Json으로부터 인스턴스화하는 방법을 주입 해주기 위함
+  // factory CursorPagination.fromJson(
+  //         Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+  //     _$CursorPaginationFromJson(json, fromJsonT);
   factory CursorPagination.fromJson(
           Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
       _$CursorPaginationFromJson(json, fromJsonT);
