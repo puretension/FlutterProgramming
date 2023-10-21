@@ -1,6 +1,6 @@
 # Learned by CodeFactory
 https://www.inflearn.com/course/플러터-실전/dashboard
-## 강의를 수강하며 학습하고 완강후의 플러터로 앱을 만들때에도 유용하게 적용되었던 개념들 정리
+## 강의를 수강하며 알게된 개념 정리
 ## Provider & JsonSerializable
 
 * Provider: 플러터에서 상태 관리 패키지 중 하나로, 상태를 관리하고 공유하기 위한 방법을 제공하며 다양한 Provider를 사용하면 상태 관리를 효율적으로 할 수 있다.
